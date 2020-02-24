@@ -1,13 +1,16 @@
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 
 const Users = require('../models/users')
 
 module.exports = (req, res, next) => {
-    if (req.headers.username && req.headers.password) {
+
+    let { username, password } = req.headers;
+
+    if (username && password) {
         Users.findBy({ username })
             .first()
             .then(user => {
-                if (user && bcrypt.compareSync(req.headers.password, user.password)) {
+                if (user && bcrypt.compareSync(password, user.password)) {
                     next()
                 }
                 else {
