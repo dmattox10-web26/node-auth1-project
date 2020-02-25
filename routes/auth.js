@@ -40,8 +40,21 @@ router.post('/login', (req, res) => {
     })
 })
 
-router.post('/logout', (req, res) => {
-
+router.get('/logout', (req, res) => {
+  if(req.session) {
+    req.session.destroy(err => {
+      if (err) {
+        res.status(500).json({ you: 'can check out any time you like, but you can never leave' })
+        console.log(err)
+      }
+      else {
+        res.status(200).json({ bye: 'felicia' })
+      }
+    })
+  }
+  else {
+    res.end()
+  }
 })
 
 module.exports = router
